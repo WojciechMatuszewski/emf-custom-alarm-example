@@ -1,0 +1,24 @@
+dashboards: false
+
+topics:
+  alarm:
+    topic: TestWojtekTopic
+
+definitions:
+  GraphQLRequestsAlarm:
+    metric: Requests
+    description: Some test alarm
+    threshold: 1
+    statistic: Sum
+    period: 60
+    evaluationPeriods: 1
+    namespace: ${self:service}
+    comparisonOperator: GreaterThanThreshold
+    # can be omitted, but for clarity I would always define dimensions explicitly
+    omitDefaultDimension: true
+    dimensions:
+      - Name: FunctionName
+        Value: !Ref GraphqlLambdaFunction
+
+alarms:
+  - GraphQLRequestsAlarm

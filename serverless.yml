@@ -1,0 +1,23 @@
+service: wojtek-emf-test
+
+plugins:
+  - serverless-plugin-aws-alerts
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: eu-central-1
+  stage: ${opt:stage, 'dev'}
+
+custom:
+  alerts: ${file(serverless.alerts.yml)}
+
+functions:
+  graphql:
+    handler: handler.handler
+    environment:
+      METRIC_NAMESPACE: ${self:service}
+    events:
+      - http:
+          method: POST
+          path: /graphql
